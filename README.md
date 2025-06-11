@@ -19,6 +19,8 @@ Utilisation des API et AJAX
 ├─ api/                   # Endpoints API (e.g. search.php, deleteOrderAjax.php, deleteOldOrders.php)
 ├─ config/
 │   └─ config.php         # Configuration de la base de données et des sessions
+│                         # Peut lire DB_HOST, DB_NAME, DB_USER et DB_PASS
+│                         # depuis les variables d'environnement
 ├─ controllers/           # Contrôleurs pour gérer la logique métier
 │   ├─ AdminController.php
 │   ├─ ArticlesController.php
