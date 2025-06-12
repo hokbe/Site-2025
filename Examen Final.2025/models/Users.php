@@ -53,6 +53,38 @@ class Users {
         $query->execute([':username' => $username]);
         return $query->fetch();
     }
+
+    // Vérifie s'il existe déjà un utilisateur avec cet email ou ce nom d'utilisateur
+    public function getUserByEmailOrUsername($email, $username) {
+        $query = $this->db->prepare("SELECT * FROM users WHERE email = :email OR username = :username LIMIT 1");
+        $query->execute([
+            ':email' => $email,
+            ':username' => $username
+        ]);
+        return $query->fetch();
+    }
+
+    // Crée un nouvel utilisateur avec un rôle par défaut 'user'
+    public function createUser($firstname, $lastname, $username, $email, $password, $address, $city, $zipcode, $country) {
+        try {
+            $query = "INSERT INTO users (firstname, lastname, username, email, password, address, city, zipcode, id_countries, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'user', NOW())";
+            $stmt = $this->db->prepare($query);
+            return $stmt->execute([
+                $firstname,
+                $lastname,
+                $username,
+                $email,
+                $password,
+                $address,
+                $city,
+                $zipcode,
+                $country
+            ]);
+        } catch (\PDOException $e) {
+            error_log("Erreur createUser: " . $e->getMessage());
+            return false;
+        }
+    }
     
     // Mettre à jour les informations de l'utilisateur (sauf le mot de passe)
     public function updateUser($id, $data) {
